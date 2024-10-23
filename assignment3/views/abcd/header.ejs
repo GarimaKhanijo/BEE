@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+</head>
+<body>
+    <header>
+        <h1>Welcome to the Product Page</h1>
+        <form action="/products" method="GET">
+            <input type="text" name="search" placeholder="Search products..." value="<%= search ? search : '' %>">
+            <button type="submit">Search</button>
+        </form>
+    </header>

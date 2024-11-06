@@ -1,0 +1,29 @@
+BASIC CRUD OPERATIONS
+
+show dbs
+
+use school
+
+db.createCollection("students")
+
+db.students.insertMany([{"name":"John","age":"18","grade":"B"},
+{"name":"Alice","age":"19","grade":"A"},{"name":"Emily","age":"19","grade":"O"}])
+
+db.students.find()
+
+db.students.find({ age: { $gt: 18 } })
+
+db.students.find({ age: { $gt: 18, $lt: 23 } })
+
+db.students.updateOne({ name: "John" }, { $set: { grade: "A" } })
+
+db.students.deleteOne({ name: "Emily" })
+
+
+ADVANCED OPERATIONS
+
+db.students.countDocuments({ grade: "B" })
+
+db.students.find({}, { name: 1, grade: 1, _id: 0 })
+
+db.students.find().sort({ age: -1 })

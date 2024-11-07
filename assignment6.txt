@@ -1,0 +1,65 @@
+1. db.employees.find(
+{
+    $or: [
+        { age: { $gt: 30 } },
+        { experience: { $gt: 5 } }
+    ]
+});
+
+2. db.products.find({
+    stock: { $gt: 0 },
+    price: { $lt: 50 }
+});
+
+3. db.students.find({
+    $or: [
+        { enrolled: false },
+        { grade: { $lt: "C" } }
+    ]
+});
+
+4. db.courses.find({
+    $or: [
+        { duration: { $lt: 6 } },
+        { instructor: { $exists: false } }
+    ]
+});
+
+5. db.orders.find({
+    $or: [
+        { status: { $ne: "shipped" } },
+        { shipped_date: { $exists: false } }
+    ]
+});
+
+6. db.employees.find(
+    { department: { $nin: ["Engineering", "IT"] } },
+    { name: 1, department: 1, _id: 0 }
+);
+
+7. db.students.find({
+    exam_score: { $lt: 50 },
+    participation: false
+});
+
+8. db.employees.find({
+    department: "Sales",
+    $or: [
+        { experience: { $gt: 3 } },
+        { age: { $lt: 25 } }
+    ]
+});
+
+9. db.inventory.find({
+    $or: [
+        { price: { $exists: true, $lt: 100 } },
+        { stock: { $exists: false } }
+    ]
+});
+
+10. db.courses.find({
+    instructor: { $ne: "John Smith" },
+    duration: { $lte: 10 }
+});
+
+

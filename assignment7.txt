@@ -1,0 +1,135 @@
+show dbs;
+use demoDB;
+
+
+1. db.products.insertMany([
+  { name: "Laptop", price: 90, stock: 10, category: "electronics" },
+  { name: "Chair", price: 150, stock: 4, category: "furniture" },
+  { name: "Table", price: 180, stock: 10, category: "furniture" },
+  { name: "Headphones", price: 50, stock: 15, category: "electronics" },
+  { name: "Couch", price: 350, stock: 2, category: "furniture" }
+]);
+
+db.products.find(
+{
+  price: { $gte: 20, $lte: 100 },
+  stock: { $gt: 0 }
+})
+
+_______________________________________________________________________________
+
+2. db.students.insertMany([
+  { name: "Alice", grade: 90, attendance: 95, age: 17 },
+  { name: "Bob", grade: 70, attendance: 85, age: 19 },
+  { name: "Charlie", grade: 88, attendance: 80, age: 16 },
+  { name: "David", grade: 65, attendance: 78, age: 20 },
+  { name: "Eve", grade: 92, attendance: 93, age: 18 }
+]);
+
+
+db.students.find({
+  $or: [
+    { grade: { $gt: 85 } },
+    { attendance: { $gt: 90 } },
+    { age: { $lt: 18 } }
+  ]
+})
+_________________________________________________________________________________
+
+3. db.jobs.insertMany([
+  { title: "Software Engineer", salary: 70000, location: "New York" },
+  { title: "Product Manager", salary: 55000, location: "San Francisco" },
+  { title: "Data Scientist", salary: 60000, location: "Austin" },
+  { title: "Designer", salary: 45000, location: "New York" }
+]);
+
+
+db.jobs.find({
+  salary: { $gt: 50000 },
+  location: { $in: ["New York", "San Francisco"] }
+})
+
+_________________________________________________________________________________
+4. db.inventory.insertMany([
+  { name: "Smartphone", category: "electronics", discount: 15, stock: 20 },
+  { name: "TV", category: "electronics", discount: 5, stock: 0 },
+  { name: "Microwave", category: "electronics", discount: 10, stock: 5 },
+  { name: "Blender", category: "kitchen", discount: 20, stock: 8 }
+]);
+
+
+db.inventory.find({
+  category: "electronics",
+  discount: { $gte: 10 },
+  stock: { $gt: 0 }
+})
+_________________________________________________________________________________
+
+5. db.orders.insertMany([
+  { order_id: 1, status: "pending", customer_type: "VIP", amount: 300 },
+  { order_id: 2, status: "shipped", customer_type: "regular", amount: 600 },
+  { order_id: 3, status: "pending", customer_type: "regular", amount: 700 },
+  { order_id: 4, status: "pending", customer_type: "VIP", amount: 100 },
+  { order_id: 5, status: "urgent", total_amount: 1200, priority: "medium" }
+]);
+
+
+db.orders.find({
+  status: "pending",
+  $or: [
+    { customer_type: "VIP" },
+    { amount: { $gt: 500 } }
+  ]
+})
+_________________________________________________________________________________
+
+6. db.students.find({
+  $or: [
+    { $and: [{ age: { $gt: 18 } }, { grade: { $lt: 60 } }] },
+    { attendance: { $lt: 75 } }
+  ]
+})
+
+_________________________________________________________________________________
+7. db.products.find({
+  category: "furniture",
+  $or: [
+    { price: { $lt: 200 } },
+    { stock: { $lt: 5 } }
+  ]
+})
+
+________________________________________________________________________________
+8. db.items.insertMany([
+  { name: "Antivirus Software", type: "software", price: 40 },
+  { name: "Project Management Tool", type: "service", price: 80 },
+  { name: "Database Management", type: "software", price: 120 }
+]);
+
+db.items.find({
+  type: { $in: ["software", "service"] },
+  price: { $lt: 100 }
+})
+
+________________________________________________________________________________
+
+9. db.employees.insertMany([
+  { name: "John Doe", experience: 6, department: "Engineering" },
+  { name: "Jane Smith", experience: 7, department: "HR" },
+  { name: "Tom Brown", experience: 4, department: "Sales" },
+  { name: "Emily White", experience: 3, department: "Engineering" }
+]);
+
+db.employees.find({
+  experience: { $gt: 5 },
+  department: { $in: ["Engineering", "HR"] }
+})
+
+_________________________________________________________________________________
+
+10. db.orders.find({
+  $or: [
+    { $and: [{ status: "urgent" }, { amount: { $gt: 1000 } }] },
+    { priority: "high" }
+  ]
+})

@@ -1,0 +1,182 @@
+use Assignment9DB
+
+
+
+db.orders.insertMany([
+    { orderId: 1, userId: 101, orderTotal: 150, orderStatus: "shipped", year: 2023 },
+    { orderId: 2, userId: 102, orderTotal: 80, orderStatus: "pending", year: 2023 },
+    { orderId: 3, userId: 103, orderTotal: 200, orderStatus: "shipped", year: 2023 },
+    { orderId: 4, userId: 104, orderTotal: 120, orderStatus: "shipped", year: 2022 }
+]);
+
+
+
+
+db.sales.insertMany([
+    { productId: 1, category: "Electronics", quantity: 50 },
+    { productId: 2, category: "Books", quantity: 20 },
+    { productId: 3, category: "Electronics", quantity: 30 },
+    { productId: 4, category: "Clothing", quantity: 15 }
+]);
+
+
+
+db.users.insertMany([
+    { userId: 101, name: "Alice" },
+    { userId: 102, name: "Bob" },
+    { userId: 103, name: "Charlie" }
+]);
+
+
+
+db.transactions.insertMany([
+    { transactionId: 1, customerId: 101, amount: 150 },
+    { transactionId: 2, customerId: 102, amount: 80 },
+    { transactionId: 3, customerId: 103, amount: 200 },
+    { transactionId: 4, customerId: 101, amount: 120 }
+]);
+
+
+
+
+
+db.departments.insertMany([
+    { departmentId: 1, name: "Sales" },
+    { departmentId: 2, name: "Engineering" }
+]);
+
+db.employees.insertMany([
+    { employeeId: 1, name: "John", departmentId: 1 },
+    { employeeId: 2, name: "Doe", departmentId: 2 },
+    { employeeId: 3, name: "Jane", departmentId: 1 }
+]);
+
+
+
+
+db.products.insertMany([
+    { productId: 1, category: "Electronics", brand: "BrandA", sales: 500 },
+    { productId: 2, category: "Books", brand: "BrandB", sales: 200 },
+    { productId: 3, category: "Electronics", brand: "BrandC", sales: 300 },
+    { productId: 4, category: "Clothing", brand: "BrandD", sales: 100 }
+]);
+
+
+
+db.books.insertMany([
+    { bookId: 1, title: "Book A" },
+    { bookId: 2, title: "Book B" }
+]);
+
+db.borrowRecords.insertMany([
+    { recordId: 1, bookId: 1 },
+    { recordId: 2, bookId: 1 },
+    { recordId: 3, bookId: 2 }
+]);
+
+
+
+
+
+db.reviews.insertMany([
+    { productId: 1, rating: 4 },
+    { productId: 1, rating: 5 },
+    { productId: 2, rating: 3 },
+    { productId: 2, rating: 4 }
+]);
+
+
+
+
+1. db.orders.find({ orderTotal: { $gt: 100 }, orderStatus: "shipped" });
+
+2. db.sales.aggregate([
+    { $group: { _id: "$category", totalQuantity: { $sum: "$quantity" } } }
+]);
+
+3. db.users.aggregate([
+    {
+        $lookup: {
+            from: "orders",
+            localField: "userId",
+            foreignField: "userId",
+            as: "userOrders"
+        }
+    }
+]);
+
+4. db.transactions.aggregate([
+    { $group: { _id: "$customerId", totalSpent: { $sum: "$amount" } } }
+]);
+
+
+5. db.orders.aggregate([
+    { $match: { year: 2023 } },
+    { $group: { _id: null, totalRevenue: { $sum: "$orderTotal" } } }
+]);
+
+
+6. db.employees.aggregate([
+    {
+        $lookup: {
+            from: "departments",
+            localField: "departmentId",
+            foreignField: "departmentId",
+            as: "departmentDetails"
+        }
+    },
+    { $match: { "departmentDetails.name": "Sales" } }
+]);
+
+
+7. db.products.aggregate([
+    {
+        $group: {
+            _id: { category: "$category", brand: "$brand" },
+            totalSales: { $sum: "$sales" }
+        }
+    }
+]);
+
+8. db.books.aggregate([
+    {
+        $lookup: {
+            from: "borrowRecords",
+            localField: "bookId",
+            foreignField: "bookId",
+            as: "borrowDetails"
+        }
+    },
+    {
+        $project: {
+            title: 1,
+            borrowCount: { $size: "$borrowDetails" }
+        }
+    }
+]);
+
+
+
+9. db.orders.aggregate([
+    {
+        $lookup: {
+            from: "users",
+            localField: "userId",
+            foreignField: "userId",
+            as: "userDetails"
+        }
+    },
+    { $unwind: "$userDetails" },
+    { $match: { "userDetails.membership": "VIP" } },
+    { $group: { _id: null, totalRevenue: { $sum: "$orderTotal" } } }
+]);
+
+
+10. db.reviews.aggregate([
+    {
+        $group: {
+            _id: "$productId",
+            averageRating: { $avg: "$rating" }
+        }
+    }
+]);
